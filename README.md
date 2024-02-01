@@ -1,4 +1,4 @@
-# Graduation Project
+# Graduation Project Demo
 
 https://github.com/farahalimohamed/graduation-project/assets/74794101/93c8594d-9884-4966-90f5-401e21cad4db
 
