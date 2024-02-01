@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Users' Requests</title>
+    <style>
+        @import url('http://fonts.googleapis.com/css?family=Muli&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Muli';
+            background-color: #DBDFEA;
+        }
+
+        .nav {
+            position: fixed;
+            top: 25px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #DBDFEA;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .nav-title {
+            flex-grow: 5;
+            text-align: center;
+        }
+
+        .nav-title h2 {
+            font-weight: bold;
+            color: #566CA6;
+        }
+
+        .navbar-placeholder {
+            flex-grow: 1;
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .nav-content h2 {
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #566CA6;
+            font-size: 20px;
+        }
+
+        .container {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+        }
+
+        .container#blur.active {
+            filter: blur(20px);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .side {
+            background: #FAF0E4;
+            padding: 30px;
+            width: 250px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .side img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 10px 10px rgb(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: row;
+            max-width: 700px;
+            margin: 0 auto;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            flex-grow: 1;
+            margin: 20px;
+        }
+
+        .card-info h2 {
+            padding-left: 5px;
+            padding-bottom: 10px;
+            width: 250px;
+            position: relative;
+        }
+
+        .card-info p {
+            padding: 10px;
+            position: relative;
+            opacity: 0.6;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 25px;
+            padding-left: 5px;
+        }
+
+        .btn {
+            padding: 12px 15px;
+            width: 100%;
+            margin-top: 20px;
+            background-color: #566CA6;
+            color: white;
+            font-weight: bold;
+            border: none;
+            outline: none;
+            border-radius: 20px;
+        }
+
+        .btn.reject {
+            background-color: #9c1d14;
+        }
+
+        .btn.accept:hover {
+            background: #fff;
+            color: #566CA6;
+            border: 1px solid #566CA6;
+            transform: scale(1.05);
+        }
+
+        .btn.accept:active {
+            transform: translateY(4px);
+        }
+
+        .btn.reject:hover {
+            background: #fff;
+            color: #9c1d14;
+            border: 1px solid #9c1d14;
+            transform: scale(1.05);
+        }
+
+        .btn.reject:active {
+            transform: translateY(4px);
+        }
+
+        .btn-popup {
+            display: block;
+            margin: 0 0 20px 0;
+            background-color: transparent;
+            font-size: 20px;
+            color: #7e92c8;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            align-items: center;
+        }
+
+        #popup {
+            background: #fff;
+            width: 370px;
+            padding: 50px;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 40%;
+            border-radius: 5px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.30);
+            position: fixed;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.5s;
+        }
+
+        #popup.active {
+            top: 50%;
+            visibility: visible;
+            opacity: 1;
+            transition: 0.5s;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            z-index: 1;
+            background-color: #f9f9f9;
+            min-width: 190px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            border-radius: 5px;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            color: black;
+            font-size: 16px;
+            padding: 4px 3px 3px 5px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        {% load static %}
+        <div class="nav-content">
+            <img class="logo" src="{% static 'img/logo_light_blue.png' %}">
+            <h2>El72nyyy</h2>
+        </div>
+        <div class="nav-title">
+            <h2>Pending Requests</h2>
+        </div>
+        <div class="navbar-placeholder"></div>
+    </div>
+    <div class="container" id="blur">
+        {% load static %}
+        {% for request in requests %}
+        <script>
+            var latlng = '{{request.userlat}},{{request.userlng}}';
+            var geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=AIzaSyDkWapKK5xx_BkMSLYDQjrV6IIaM4W-rSE`;
+            fetch(geocodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    var location = data.results[0].formatted_address;
+                    var card = document.querySelector(`[data-request-id="{{request.id}}"]`);
+                    var locationField = card.querySelector('.location');
+                    locationField.textContent = `Location: ${location}`;
+                })
+                .catch(error => console.error('Error fetching geocode data:', error));
+        </script>
+        <div class="card" data-request-id="{{ request.id }}">
+            <div class="side">
+                <img src="{% static 'img/patient.png' %}">
+            </div>
+            <div class="card-info" id="card">
+                <h2>Request ID {{ request.id }}</h2>
+                <p>User ID: {{ request.userId }}</p>
+                <p class="location">Location: {{ request.userlat }}, {{ request.userlng }}</p>
+                <p>Case: {{ request.userCase }}</p>
+            </div>
+            <div class="btn-container">
+                <button class="btn accept" onclick="showPopup('{{ request.id }}')">ACCEPT</button>
+                <button class="btn reject"
+                    onclick="removeCard('{{ request.id }}', '{{ request.userId }}', '{{ request.userlat }}', '{{ request.userlng }}', '{{ request.userCase }}', this)">REJECT</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div id="popup">
+        <div class="dropdown">
+            <div id="card-info" style="font-weight: bold; padding-bottom: 15px; width: 250px; position: relative;">
+            </div>
+            <button class="btn-popup" onclick="toggleDropdown()">Select an Ambulance</button>
+            <div class="dropdown-content" id="dropdown-content">
+                {% for ambulance in Ambulances %}
+                <a onclick="selectOption(this)">Ambulance {{ ambulance.id }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <button class="btn-popup" onclick="sendRequest()">Send Request</button>
+        <button class="btn-popup" onclick="hidePopup()">Cancel</button>
+    </div>
+
+    <script>
+        function showPopup(requestId) {
+            var blur = document.getElementById('blur');
+            blur.classList.toggle('active');
+            var popup = document.getElementById('popup');
+            popup.classList.toggle('active');
+            var cardInfo = document.getElementById("card-info");
+            cardInfo.innerHTML = "Request ID: " + requestId;
+
+            //////////update//////
+            var dropdownButton = document.querySelector(".btn-popup");
+            if (selectedAmbulanceId) {
+                dropdownButton.disabled = false;
+            }
+
+        }
+
+        ////////update/////////
+        function hidePopup() {
+            var blur = document.getElementById("blur");
+            blur.classList.toggle("active");
+            var popup = document.getElementById('popup');
+            popup.classList.toggle('active');
+            selectedAmbulanceId = null;
+
+            // Enable the dropdown
+            var dropdownButton = document.querySelector(".btn-popup");
+            dropdownButton.disabled = false;
+        }
+
+
+        function toggleDropdown() {
+            var dropdown = document.querySelector(".dropdown");
+            dropdown.classList.toggle("active");
+        }
+
+        function selectOption(option) {
+            var dropdown = document.querySelector(".dropdown");
+            dropdown.classList.remove("active");
+            var cardInfo = document.getElementById("card-info");
+            var ambulanceId = option.innerHTML.replace("Ambulance ", "");
+            cardInfo.innerHTML += " - Ambulance " + ambulanceId;
+
+            //////update/////
+            var dropdownButton = document.querySelector(".btn-popup");
+            dropdownButton.disabled = true;
+
+        }
+        function removeCard(requestId, userId, userLat, userLng, userCase, button) {
+            var card = button.parentNode.parentNode;
+            card.parentNode.removeChild(card);
+
+            // Use the retrieved values as needed
+            console.log("Request ID:", requestId);
+            console.log("User ID:", userId);
+            console.log("User Lat:", userLat);
+            console.log("User Lng:", userLng);
+            console.log("User Case:", userCase);
+
+            fetch('/api/ambulance/', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "uid": userId,
+                    "lat": parseFloat(userLat),
+                    "lng": parseFloat(userLng),
+                    "ucase": userCase
+                })
+            });
+        }
+
+        // function removeCard(requestId, userId, userLat, userLng, userCase, button) {
+
+        //     var card = button.parentNode.parentNode;
+        //     card.parentNode.removeChild(card);
+
+        //     // Use the retrieved values as needed
+        //     console.log("Request ID:", requestId);
+        //     console.log("User ID:", userId);
+        //     console.log("User Lat:", userLat);
+        //     console.log("User Lng:", userLng);
+        //     console.log("User Case:", userCase);
+
+
+        //     fetch('/api/ambulance/', {
+        //         method: "POST",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify({
+        //             "uid": userId,
+        //             "lat": parseFloat(userLat),
+        //             "lng": parseFloat(userLng),
+        //             "ucase": userCase
+        //         })
+        //     })
+        // }
+
+        function sendRequest() {
+            var cardInfo = document.getElementById("card-info");
+            if (!cardInfo) {
+                console.error("Error: could not find element with ID 'card-info'");
+                return;
+            }
+            var request = cardInfo.innerHTML.replace("Request ID: ", "");
+            var requestId = parseInt(request);
+            var ambulanceId = request.replace(requestId + " - Ambulance ", "");
+            // Send the request to the server
+            fetch("/api/HandleRequest/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "request_id": requestId,
+                    "ambulance_id": ambulanceId
+                })
+            })
+                .then(function (response) {
+                    if (response.status == 200) {
+                        // Request was successful, remove the card from the page
+                        var card = document.querySelector(".card[data-request-id='" + requestId + "']");
+                        card.parentNode.removeChild(card);
+                        hidePopup();
+                    } else {
+                        // Handle error response
+                        console.error("Error:", response.statusText);
+                    }
+                })
+                .catch(function (error) {
+                    // Handle network error
+                    console.error("Error sending request:", error);
+                });
+        }
+    </script>
+
+</body>
+
+</html>

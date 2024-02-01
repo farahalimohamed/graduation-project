@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>El72nnnyy</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body{
+			background-color: #DBDFEA;
+			margin-top: 60px;
+		}
+		.container {
+			margin: auto;
+			display: flex;
+			height: 500px;
+			width: 800px;
+			box-shadow: 15px 15px 20px grey;
+			/* border: 1px solid black; */
+		}
+		.form {
+			background-color: whitesmoke;
+			width:400px;
+			display: flex;
+			flex-direction: column;
+			width: 50%;
+			align-items: center;
+		}
+		.form h2{
+			font-size: 3rem;
+			font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+			margin: 40px;
+		}
+		.box{
+			padding: 12px;
+			width: 65%;
+			margin: 15px;
+			border: 1px solid black;
+			outline: none;
+			border-radius: 20px;
+		}
+		#submit{
+			padding: 12px 30px;
+			width: 40%;
+			margin-top: 40px;
+			background-color: black;
+			color: white;
+			font-weight: bold;
+			border: none;
+			outline: none;
+			border-radius: 20px;
+		}
+		#submit:hover{
+			cursor: pointer;
+			background-color: #566CA6;
+		}
+		.side{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 50%;
+			background-color: white;
+		}
+		.side img{
+			width: 380px;
+			height: 380px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<form class="form" action=" http://192.168.10.5:40/api/hospitalLogin/" method="post">
+			<h2>Login</h2>
+			<input type="text" name="id" class="box" placeholder="Enter your Id" id="username" name="id" required>
+			<input type="password" name="password" class="box" placeholder="Enter your Password" id="password" name="password" required>
+			<input type="submit" id="submit" value="Login" >
+		</form>
+		<div class="side">
+			<img src="hospital.png">
+		</div>
+	</div>
+</body>
+</html>
